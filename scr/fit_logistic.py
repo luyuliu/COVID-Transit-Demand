@@ -15,8 +15,8 @@ col_ridership = db_corona.ridership
 rl_system = col_system.find({})
 
 def sigmoid(p,x):
-    x0,y0,c,k=p
-    y = c / (1 + np.exp(-k*(x-x0))) + y0
+    x0,y0,L,k=p
+    y = L / (1 + np.exp(-k*(x-x0))) + y0
     return y
 
 def residuals(p,x,y):
@@ -31,6 +31,7 @@ def resize(arr,lower=0.0,upper=1.0):
     return arr
 
 for each_system in rl_system:
+    _id = each_system["_id"]
     system_name = each_system["Agency Name"]
     print(system_name)
     rl_ridership = col_ridership.find({"system_name": system_name}).sort("date", ASCENDING)
@@ -44,13 +45,13 @@ for each_system in rl_system:
         residuals,p_guess,args=(x,y),full_output=1)  
 
     
-    x0,y0,c,k=p
+    x0,y0,L,k=p
     print('''\
     x0 = {x0}
     y0 = {y0}
-    c = {c}
+    L = {L}
     k = {k}
-    '''.format(x0=x0,y0=y0,c=c,k=k))
+    '''.format(x0=x0,y0=y0,L=L,k=k))
 
     xp = np.linspace(0, len(x), 1500)
     pxp=sigmoid(p,xp)
@@ -64,6 +65,9 @@ for each_system in rl_system:
     plt.title(system_name, fontsize = 16)
     plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\" + system_name + ".jpg")
     plt.clf()
+
+    col_system.update_one({"_id": _id}, {"$set":{"L": L, "k": k, "x0": x0, "y0": y0}})
+   
 
 
     
