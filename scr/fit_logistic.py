@@ -52,6 +52,7 @@ for each_system in rl_system:
     L = {L}
     k = {k}
     '''.format(x0=x0,y0=y0,L=L,k=k))
+    col_system.update_one({"_id": _id}, {"$set":{"L": L, "k": k, "x0": x0, "y0": y0}})
 
     xp = np.linspace(0, len(x), 1500)
     pxp=sigmoid(p,xp)
@@ -66,7 +67,6 @@ for each_system in rl_system:
     plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\" + system_name + ".jpg")
     plt.clf()
 
-    col_system.update_one({"_id": _id}, {"$set":{"L": L, "k": k, "x0": x0, "y0": y0}})
    
 
 
