@@ -83,4 +83,5 @@ for each_system in rl_system:
     if rl_case != []:
         rl_case = rl_case[0]
         col_system.update_one({"_id": _id}, {"$set":{"lat": rl_case["lat"], "lon": rl_case["lon"]}})
-    
+    else:
+        print(county)

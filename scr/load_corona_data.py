@@ -19,7 +19,7 @@ with open(data_location) as the_file:
     for row in the_reader:
         if line_count == 0:
             for each_item in row:
-                date_list = each_item.split("/")
+                date_list = each_item.split("-")
                 if len(date_list) < 3:
                     field_names.append(each_item)
                     continue
@@ -40,6 +40,7 @@ with open(data_location) as the_file:
                 elif index == 3:
                     lon = item
                 else:
+                    # print(field_names[index])
                     insertion = {
                         "state": state,
                         "county": county,

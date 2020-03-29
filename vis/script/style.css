@@ -253,3 +253,11 @@
 .cota-color-5 {
   color: #ffffcc
 }
+
+.leaflet-bottom {
+  margin-left: 250px;
+}
+
+#north_arrow {
+  margin-top: 100px;
+}
