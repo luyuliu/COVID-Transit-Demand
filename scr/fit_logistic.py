@@ -81,7 +81,7 @@ for each_system in rl_system:
     plt.grid(True)
     # plt.show()
     plt.title(system_name, fontsize=16)
-    plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\" + metro_area + "_" +
+    plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand\\" + metro_area + "_" +
                 system_name + ".jpg")
     plt.clf()
 

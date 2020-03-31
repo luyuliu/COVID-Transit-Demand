@@ -329,27 +329,155 @@ $("#second-btn").click(function () {
 });
 
 $("#third-btn").click(function () {
-  $.get('http://127.0.0.1:21212/'+ "stop_aggregate_count", function (rawstops) {
+  var colName = "system_info";
+  var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
+  var colorRamp = [-Infinity,   -10, -5, -2, 2, 5, 10, Infinity]
+  var title = 'First case and <br> first demand decline <br>distance distribution';    
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create("div", "info legend");
+    div.id = 'legend'
+
+    var legendContent2 = "<span style='font-size:30;'>Legend</span>"
+    legendContent2 += "<h3>" + title + "</h3>"
+    legendContent2 += '<table><tbody>'
+    for (var i = 0; i < colorCode.length; i++) {
+      if (colorRamp[i] == -Infinity) {
+        labelContent2 = "( -∞, " + colorRamp[i + 1] + ")";
+      }
+      else {
+        if (colorRamp[i + 1] == Infinity) {
+          labelContent2 = "[" + colorRamp[i] + ", ∞ )";
+        }
+        else {
+          labelContent2 = "[" + colorRamp[i] + ", " + colorRamp[i + 1] + ")";
+        }
+      }
+      legendContent2 += "<tr valign='middle'>" +
+        "<td class='tablehead' align='middle'>" + getColorBlockString(colorCode[i]) + "</td>" +
+        "<td class='tablecontent' align='right' style='width:180px;'><span style='width:90%;font-size:30;font:'>" + labelContent2 + "</span><td>" + "</tr>";
+    }
+    legendContent2 += "</tbody><table>";
+
+    div.innerHTML = legendContent2;
+    return div;
+  }
+  legend.addTo(map);
+  $.get('http://127.0.0.1:21232/'+ colName, function (rawstops) {
     stops = rawstops._items
     console.log(stops)
-    
-    var colorRamp = [0, 1000, 2000, 5000, 10000, 20000, 50000, 100000]
-    var colorCode = ['#4575b4','#91bfdb','#e0f3f8','#ffffbf','#fee090','#fc8d59','#d73027']
+    function returnColor(value, colorRamp, colorCode) {
+      for (var i = 1; i < colorRamp.length; i++) {
+        if (value >= colorRamp[i - 1] && value < colorRamp[i]) {
+          return colorCode[i - 1]
+        }
+        else {
+          continue;
+        }
+      }
+      return
+    }
 
     for (var i = 0; i < stops.length; i++) {
-      stop = stops[i]
-      ratio = (stop.all_passenger_on_count + stop.all_passenger_off_count +stop.rear_door_on_count) ;
-      var cir = L.circle([parseFloat(stops[i].latitude), parseFloat(stops[i].longitude)], {
-        radius: 100,
+      var stop = stops[i];
+      var value = stop.x005;
+      var value2 = stop.x0_case;
+      var lat = parseFloat(stops[i].lat);
+      var lon = parseFloat(stops[i].lon);
+      if (isNaN(lat) || isNaN(value) || isNaN(value2)){
+        console.log((lat), lon, value)
+        continue
+      }
+      var point = L.circle([lat, lon], {
+        radius: 30000,
         stroke: true,
         weight: 0.2,
         color: "#000000",
         fillOpacity: 1,
         info: stops[i],
-        fillColor: returnColor(ratio, colorRamp, colorCode)
+        fillColor: returnColor(-value+value2, colorRamp, colorCode),
+        text: stop["Metro Area"]
       });
-      cir.bindPopup("<b>ParaCount: " + stop.para_passenger_count + "</b><br><b>AllCount: " + (stop.all_passenger_on_count + stop.all_passenger_off_count +stop.rear_door_on_count) + "</b><br><b>Num_wheelchair: " + stop.num_wheelchair + "</b>")
-      cir.addTo(map)
+      point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: " + value2 + "</b>")
+      point.addTo(map)
+    }
+
+  });
+});
+
+
+$("#fourth-btn").click(function () {
+  var colName = "system_info";
+  // var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
+  var colorRamp = [0, 3 , 5, 7, 9, 11, 13, Infinity]
+  var title = 'Half-life distribution';    
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create("div", "info legend");
+    div.id = 'legend'
+
+    var legendContent2 = "<span style='font-size:30;'>Legend</span>"
+    legendContent2 += "<h3>" + title + "</h3>"
+    legendContent2 += '<table><tbody>'
+    for (var i = 0; i < colorCode.length; i++) {
+      if (colorRamp[i] == -Infinity) {
+        labelContent2 = "( -∞, " + colorRamp[i + 1] + ")";
+      }
+      else {
+        if (colorRamp[i + 1] == Infinity) {
+          labelContent2 = "[" + colorRamp[i] + ", ∞ )";
+        }
+        else {
+          labelContent2 = "[" + colorRamp[i] + ", " + colorRamp[i + 1] + ")";
+        }
+      }
+      legendContent2 += "<tr valign='middle'>" +
+        "<td class='tablehead' align='middle'>" + getColorBlockString(colorCode[i]) + "</td>" +
+        "<td class='tablecontent' align='right' style='width:180px;'><span style='width:90%;font-size:30;font:'>" + labelContent2 + "</span><td>" + "</tr>";
+    }
+    legendContent2 += "</tbody><table>";
+
+    div.innerHTML = legendContent2;
+    return div;
+  }
+  legend.addTo(map);
+  $.get('http://127.0.0.1:21232/'+ colName, function (rawstops) {
+    stops = rawstops._items
+    console.log(stops)
+    function returnColor(value, colorRamp, colorCode) {
+      for (var i = 1; i < colorRamp.length; i++) {
+        if (value >= colorRamp[i - 1] && value < colorRamp[i]) {
+          return colorCode[i - 1]
+        }
+        else {
+          continue;
+        }
+      }
+      return
+    }
+
+    for (var i = 0; i < stops.length; i++) {
+      var stop = stops[i];
+      var value = stop.x005;
+      var value2 = stop.x0;
+      var lat = parseFloat(stops[i].lat);
+      var lon = parseFloat(stops[i].lon);
+      if (isNaN(lat) || isNaN(value) || isNaN(value2)){
+        console.log((lat), lon, value)
+        continue
+      }
+      var point = L.circle([lat, lon], {
+        radius: 30000,
+        stroke: true,
+        weight: 0.2,
+        color: "#000000",
+        fillOpacity: 1,
+        info: stops[i],
+        fillColor: returnColor(-value+value2, colorRamp, colorCode),
+        text: stop["Metro Area"]
+      });
+      point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: " + value2 + "</b>")
+      point.addTo(map)
     }
 
   });

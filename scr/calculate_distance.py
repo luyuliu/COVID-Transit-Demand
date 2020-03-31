@@ -19,7 +19,7 @@ rl_system = col_system.find({})
 for each_system in rl_system:
     _id = each_system["_id"]
     system_name = each_system["Agency Name"]
-    system_name = each_system["Metro Area"]
+    metro_area = each_system["Metro Area"]
     print(system_name, metro_area)
     rl_ridership = col_ridership.find(
         {"system_name": system_name}).sort("date", ASCENDING)
@@ -28,5 +28,11 @@ for each_system in rl_system:
     k = each_system['k']
     x0 = each_system["x0"]
     y0 = each_system["y0"]
+    L_case = each_system["L_case"]
+    k_case = each_system['k_case']
+    x0_case = each_system["x0_case"]
+    y0_case = each_system["y0_case"]
+
+    print()
 
     
