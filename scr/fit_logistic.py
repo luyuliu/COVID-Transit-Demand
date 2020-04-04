@@ -45,7 +45,7 @@ for each_system in rl_system:
         {"system_name": system_name}).sort("date", ASCENDING)
     y = []
     for each_record in rl_ridership:
-        y.append(-each_record["case"])
+        y.append(each_record["case"])
     x = list(range(len(y)))
     # print((x))
 
@@ -74,15 +74,25 @@ for each_system in rl_system:
     xp = np.linspace(0, len(x), 1500)
     pxp = sigmoid(p, xp)
 
-    # Plot
+    # Plot separately
     the_plot = plt.plot(x, y, '.', xp, pxp, '-')
     plt.xlabel('x')
     plt.ylabel('y', rotation='horizontal')
     plt.grid(True)
-    # plt.show()
     plt.title(system_name, fontsize=16)
     plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand\\" + metro_area + "_" +
                 system_name + ".jpg")
     plt.clf()
+
+
+#     # Plot together
+#     the_plot = plt.plot(x, y, '.')
+    
+#     plt.xlabel('x')
+#     plt.ylabel('y', rotation='horizontal')
+#     plt.grid(True)
+#     plt.title(system_name, fontsize=16)
+# plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand\\all.jpg")
+
 
 

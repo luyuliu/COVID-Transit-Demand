@@ -409,8 +409,8 @@ $("#third-btn").click(function () {
 $("#fourth-btn").click(function () {
   var colName = "system_info";
   // var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
-  var colorRamp = [0, 3 , 5, 7, 9, 11, 13, Infinity]
-  var title = 'Half-life distribution';    
+  var colorRamp = [0, 15 , 17, 19, 21, 23, 25, Infinity]
+  var title = '95 percentile date<br> distribution';    
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend");
@@ -473,7 +473,7 @@ $("#fourth-btn").click(function () {
         color: "#000000",
         fillOpacity: 1,
         info: stops[i],
-        fillColor: returnColor(-value+value2, colorRamp, colorCode),
+        fillColor: returnColor(value, colorRamp, colorCode),
         text: stop["Metro Area"]
       });
       point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: " + value2 + "</b>")
