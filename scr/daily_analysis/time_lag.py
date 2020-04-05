@@ -43,7 +43,7 @@ for each_lag in range(15):
             t0_corona = each_system["t0_corona"]
         except:
             continue
-        distance = t0_corona -24 - each_lag - (convergent_point) # 24 is the difference of start date between two data: ridership is 2/15 and usafact cases is 1/22 
+        distance = t0_corona -24 - each_lag - (divergent_point) # 24 is the difference of start date between two data: ridership is 2/15 and usafact cases is 1/22 
         
             
         if distance > 0:
