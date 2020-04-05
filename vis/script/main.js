@@ -330,9 +330,10 @@ $("#second-btn").click(function () {
 
 $("#third-btn").click(function () {
   var colName = "system_info";
-  var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
-  var colorRamp = [-Infinity,   -10, -5, -2, 2, 5, 10, Infinity]
-  var title = 'First case and <br> first demand decline <br>distance distribution';    
+  var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4'];
+  var colorRamp = [-Infinity,  -10, -5, -2, 0, 5, 10, Infinity];
+  var l = $("#lag-input").val();
+  var title = 'Response interval <br> from convergent point<br> (lag = ' + l +')';    
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend");
@@ -380,8 +381,8 @@ $("#third-btn").click(function () {
 
     for (var i = 0; i < stops.length; i++) {
       var stop = stops[i];
-      var value = stop.x005;
-      var value2 = stop.x0_case;
+      var value = stop.divergent_point;
+      var value2 = stop.t0_corona;
       var lat = parseFloat(stops[i].lat);
       var lon = parseFloat(stops[i].lon);
       if (isNaN(lat) || isNaN(value) || isNaN(value2)){
@@ -389,16 +390,16 @@ $("#third-btn").click(function () {
         continue
       }
       var point = L.circle([lat, lon], {
-        radius: 30000,
+        radius: 40000,
         stroke: true,
         weight: 0.2,
         color: "#000000",
         fillOpacity: 1,
         info: stops[i],
-        fillColor: returnColor(-value+value2, colorRamp, colorCode),
-        text: stop["Metro Area"]
+        fillColor: returnColor(-value+value2 - l - 24, colorRamp, colorCode),
+        text: stop["metro_area"]
       });
-      point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: " + value2 + "</b>")
+      point.bindPopup("<b>Agency Name: " + stop["name"] + "</b><br><b>Metro Area: " + stop["metro_area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: " + value2 + "</b>")
       point.addTo(map)
     }
 
