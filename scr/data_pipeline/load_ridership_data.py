@@ -58,7 +58,7 @@ with open(data_location) as the_file:
                             "city": city,
                             "country": country,
                             "date": field_names[index].strftime("%Y%m%d"),
-                            "case": float(item.strip('%')) / 100.0
+                            "demand_decrease": float(item.strip('%')) / 100.0
                         }
                         other_records.append(insertion)
                     else:
@@ -67,7 +67,7 @@ with open(data_location) as the_file:
                             "city": city,
                             "country": country,
                             "date": field_names[index].strftime("%Y%m%d"),
-                            "case": float(item.strip('%')) / 100.0
+                            "demand_decrease": float(item.strip('%')) / 100.0
                         }
                         # print(insertion)
                         US_records.append(insertion)

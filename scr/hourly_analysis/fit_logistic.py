@@ -3,96 +3,71 @@ import matplotlib.pyplot as plt
 import scipy.optimize
 import csv
 import os
-from datetime import date
+from datetime import date, timedelta
 from pymongo import MongoClient, ASCENDING
 from scipy.optimize import leastsq
 client = MongoClient('mongodb://localhost:27017/')
 
 db_corona = client.corona
 col_system = db_corona.system_info
-col_case = db_corona.case_count
-col_ridership = db_corona.ridership
+col_case = db_corona.corona_cases_usafacts
+col_ridership = db_corona.ridership_hourly
 
 rl_system = col_system.find({})
 
+start_date = date(2020, 3 ,16)
+end_date = date(2020, 4, 2)
 
-def sigmoid(p, x):
-    x0, y0, L, k = p
-    y = L / (1 + np.exp(-k*(x-x0))) + y0
-    return y
+def daterange(start_date, end_date):
+    for n in range(int((end_date - start_date).days)):
+        yield start_date + timedelta(n)
 
+for each_date in (list(daterange(start_date, end_date))):
+    system_count = 0
+    for each_system in rl_system:
+        _id = each_system["_id"]
+        system_name = each_system["name"]
+        metro_area = each_system["metro_area"]
+        rl_ridership = list(col_ridership.find(
+            {"name": system_name, "day": each_date.strftime("%Y-%m-%d")}).sort("time", ASCENDING))
 
-def residuals(p, x, y):
-    return y - sigmoid(p, x)
+        y = []
+        z = []
+        x = []
 
+        if len(rl_ridership) == 0:
+            continue
+            
+        print(system_name, metro_area)
+        for each_record in rl_ridership:
+            if each_record["actual"] != 0:
+                y.append( each_record["normal"] / each_record["actual"])
+            else:
+                y.append(1)
+            z.append(each_record["actual"])
+        x = list(range(len(y)))
 
-def resize(arr, lower=0.0, upper=1.0):
-    arr = arr.copy()
-    if lower > upper:
-        lower, upper = upper, lower
-    arr -= arr.min()
-    arr *= (upper-lower)/arr.max()
-    arr += lower
-    return arr
-
-
-for each_system in rl_system:
-    _id = each_system["_id"]
-    system_name = each_system["Agency Name"]
-    metro_area = each_system["Metro Area"]
-    print(system_name, metro_area)
-    rl_ridership = col_ridership.find(
-        {"system_name": system_name}).sort("date", ASCENDING)
-    y = []
-    for each_record in rl_ridership:
-        y.append(each_record["case"])
-    x = list(range(len(y)))
-    # print((x))
-
-    p_guess = (int(np.median(x)), 0, 1.0, 0.5)
-    # if system_name == "CATA":
-    #     continue
-    p, cov, infodict, mesg, ier = leastsq(
-        residuals, p_guess, args=(x, y), full_output=1)
-
-    x0, y0, L, k = p
-    results_005 = x0 - np.log(1/(0.05)-1)/k # 5% range
-    results_095 = x0 - np.log(1/(0.95)-1)/k # 95% range
-    print('''\
-    x0 = {x0}
-    y0 = {y0}
-    L = {L}
-    k = {k}
-    x005 = {results_005}
-    '''.format(x0=x0, y0=y0, L=L, k=k, results_005=results_005))
+        # Plot separately
+        the_plot = plt.plot(x, y, '-', x, z, '-')
+        plt.xlabel('x')
+        plt.ylabel('y', rotation='horizontal')
+        plt.grid(True)
+        plt.title(system_name, fontsize=16)
+        plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand_hourly\\" + metro_area + "_" +
+                    system_name + ".jpg")
+        plt.clf()
     
-    
-
-    col_system.update_one({"_id": _id}, {"$set": {
-                          "L": L, "k": k, "x0": x0, "y0": y0, "x005": results_005, "x095": results_095, "modified_at": date.today().strftime("%Y%m%d")}})
-
-    xp = np.linspace(0, len(x), 1500)
-    pxp = sigmoid(p, xp)
-
-    # Plot separately
-    the_plot = plt.plot(x, y, '.', xp, pxp, '-')
-    plt.xlabel('x')
-    plt.ylabel('y', rotation='horizontal')
-    plt.grid(True)
-    plt.title(system_name, fontsize=16)
-    plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand\\" + metro_area + "_" +
-                system_name + ".jpg")
-    plt.clf()
+    break
 
 
-#     # Plot together
-#     the_plot = plt.plot(x, y, '.')
-    
-#     plt.xlabel('x')
-#     plt.ylabel('y', rotation='horizontal')
-#     plt.grid(True)
-#     plt.title(system_name, fontsize=16)
-# plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand\\all.jpg")
+    #     # Plot together
+    #     the_plot = plt.plot(x, y, '.')
+        
+    #     plt.xlabel('x')
+    #     plt.ylabel('y', rotation='horizontal')
+    #     plt.grid(True)
+    #     plt.title(system_name, fontsize=16)
+    # plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand\\all.jpg")
 
 
 

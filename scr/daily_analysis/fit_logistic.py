@@ -72,7 +72,7 @@ for each_system in rl_system:
                           "B": L, "k": k, "t0": x0, "b": y0, "divergent_point": results_005, "convergent_point": results_095, "modified_at": date.today().strftime("%Y%m%d")}}
                           )
 
-    xp = np.linspace(0, len(x), 1500)
+    xp = np.linspace(0, len(x), len(y))
     pxp = sigmoid(p, xp)
 
     # Plot separately
