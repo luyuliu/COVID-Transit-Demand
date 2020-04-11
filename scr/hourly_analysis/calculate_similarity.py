@@ -102,7 +102,7 @@ for each_date in (list(daterange(start_date, end_date))):
         plt.clf()
 
         # Update
-        col_system.update_one({"_id": _id}, {"$set": {"": }})
+        col_system.update_one({"_id": _id}, {"$set": {"distance": S, "stretch_factor": p}})
     
     break
 
