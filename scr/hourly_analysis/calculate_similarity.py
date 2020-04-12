@@ -82,14 +82,16 @@ for each_date in (list(daterange(start_date, end_date))):
 
         df = similaritymeasures.frechet_dist(normal_curve, actual_curve)
         
-        print(system_name, metro_area, round(S, 2), round(p, 2))
+        print(system_name, ',', round(S, 8), ',', round(p, 8))
 
         # Find peaks
         max_decrease_times = max(y)
         normal_peaks, _ = find_peaks(w, prominence=0.1)
         actual_peaks, _2 = find_peaks(z, prominence=0.1/max_decrease_times)
-        print(normal_peaks)
-        print(actual_peaks)
+        
+        # print(system_name, ',', len(normal_peaks), ",",len(actual_peaks))
+        # print(normal_peaks)
+        # print(actual_peaks)
 
         # Plot separately
         the_plot = plt.plot(x, w, '-', x, z, '-')
