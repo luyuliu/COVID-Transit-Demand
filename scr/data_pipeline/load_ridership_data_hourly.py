@@ -28,7 +28,7 @@ with open(data_location) as the_file:
     other_records = []
     city_county_records = []
 
-    for row in (the_reader):
+    for row in tqdm(the_reader):
         # print(row)
         if line_count == 0:
             for each_item in row:
@@ -49,7 +49,7 @@ with open(data_location) as the_file:
             if insertion["name"] == "Metro Transit" and insertion["metro_area"] == "St. Louis":
                 insertion["name"] = "Metro Transit St Louis"
             
-            rl_query = col_system.find_one({"Agency Name": insertion["name"]})
+            rl_query = col_system.find_one({"name": insertion["name"]})
             if rl_query == None:
                 if insertion["metro_area"] == "":
                     city_county_records.append(insertion)
@@ -64,4 +64,4 @@ with open(data_location) as the_file:
     col_ridership.insert_many(US_records)
     col_other_ridership.insert_many(other_records)
     col_agg.insert_many(city_county_records)
-    col_ridership.create_index([("system_name", 1)])
+    col_ridership.create_index([("name", 1)])
