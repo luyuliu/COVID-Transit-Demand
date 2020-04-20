@@ -25,6 +25,9 @@ def daterange(start_date, end_date):
 
 dic = {}
 
+first_count_list = []
+second_count_list = []
+
 for each_date in (list(daterange(start_date, end_date))):
     system_count = 0
     first_count = 0
@@ -70,7 +73,13 @@ for each_date in (list(daterange(start_date, end_date))):
         try:
             dic[system_name]
         except:
-            dic[system_name] = []
+            dic[system_name] = {}
+            dic[system_name]["first_peak_diff"] = []
+            dic[system_name]["second_peak_diff"] = []
+            dic[system_name]["first_peak_normal"] = []
+            dic[system_name]["first_peak_actual"] = []
+            dic[system_name]["second_peak_normal"] = []
+            dic[system_name]["second_peak_actual"] = []
 
         sum_wz = 0
         sum_z2 = 0
@@ -83,7 +92,6 @@ for each_date in (list(daterange(start_date, end_date))):
         for i in range(n):
             S += (p*z[i] - w[i]) ** 2
         S = math.sqrt(S)
-        dic[system_name].append(S)
 
         # Calculate similarity: a
         sum_w = 0
@@ -184,6 +192,14 @@ for each_date in (list(daterange(start_date, end_date))):
             diff_second_peak = second_peak - second_peak_normal
             second_count += 1
             second_sum += diff_second_peak
+        
+        
+        dic[system_name]["first_peak_normal"].append(first_peak_normal)
+        dic[system_name]["first_peak_actual"].append(first_peak)
+        dic[system_name]["second_peak_normal"].append(second_peak_normal)
+        dic[system_name]["second_peak_actual"].append(second_peak)
+        dic[system_name]["first_peak_diff"].append(diff_first_peak)
+        dic[system_name]["second_peak_diff"].append(diff_second_peak)
 
     print(each_date, each_weekday, height_relationship_change_count, first_all_absent_count, first_normal_absent_count, first_actual_absent_count, first_sum/first_count, second_sum/second_count)
 
@@ -217,9 +233,54 @@ for each_date in (list(daterange(start_date, end_date))):
 
 
 for index, item in dic.items():# Update
+    print(item)
     average = 0
-    for a in item:
-        average += a
-    average = average/len(item)
-    col_system.update_one({"name": index}, {"$set": {"average_procrustes_distance": average}})
-    print(index, item)
+    count = 0
+    for a in item['first_peak_normal']:
+        if a != -1:
+            average += a
+            count += 1
+    average = average/count
+
+    average1 = 0
+    count = 0
+    for a in item['first_peak_actual']:
+        if a != -1:
+            average1 += a
+            count += 1
+    average1 = average1/count
+
+    average2 = 0
+    count = 0
+    for a in item['second_peak_normal']:
+        if a != -1:
+            average2 += a
+            count += 1
+    average2 = average2/count
+
+    average3 = 0
+    count = 0
+    for a in item['second_peak_actual']:
+        if a != -1:
+            average3 += a
+            count += 1
+    average3 = average3/count
+    
+    average4 = 0
+    count = 0
+    for a in item['first_peak_diff']:
+        if a != 999:
+            average4 += a
+            count += 1
+    average4 = average4/count
+
+    average5 = 0
+    count = 0
+    for a in item['second_peak_diff']:
+        if a != 999:
+            average5 += a
+            count += 1
+    average5 = average5/count
+
+    col_system.update_one({"name": index}, {"$set": {"first_peak_normal": average, "first_peak_actual": average1, "second_peak_normal": average2, "second_peak_actual": average3, "first_peak_diff": average4, "second_peak_diff": average5}})
+    print(index)

@@ -411,7 +411,11 @@ $("#fourth-btn").click(function () {
   var colName = "system_info";
   // var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
   var colorRamp = [0, 15 , 17, 19, 21, 23, 25, Infinity]
-  var title = '95 percentile date<br> distribution';    
+  var title = '95 percentile date<br> distribution';  
+  // var fieldName = 
+  
+  // visualization(colName, fieldName, colorRamp, title);
+
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend");
@@ -475,7 +479,7 @@ $("#fourth-btn").click(function () {
         fillOpacity: 1,
         info: stops[i],
         fillColor: returnColor(value, colorRamp, colorCode),
-        text: stop["Metro Area"]
+        text: stop["metro_area"]
       });
       point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: " + value2 + "</b>")
       point.addTo(map)
@@ -483,6 +487,96 @@ $("#fourth-btn").click(function () {
 
   });
 });
+
+
+$("#fifth-btn").click(function () {
+  var colName = "system_info";
+  var field_name = $("#field-input").val()
+  // var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
+  var colorRamp = [0, 0.4 , 0.5, 0.6, 0.7, 0.8, 1, Infinity]
+  var colorRamp = [-Infinity, -1 , -0.5, -0.1, 0.1, 0.5, 1, Infinity] // first
+  var colorRamp = [-Infinity, -1.5, -1, -0.75 -0.5, -0.25, 0, 0.25, 0.5] // second
+
+  var title =  $("#title-input").val();    
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create("div", "info legend");
+    div.id = 'legend'
+
+    var legendContent2 = "<span style='font-size:30;'>Legend</span>"
+    legendContent2 += "<h3>" + title + "</h3>"
+    legendContent2 += '<table><tbody>'
+    for (var i = 0; i < colorCode.length; i++) {
+      if (colorRamp[i] == -Infinity) {
+        labelContent2 = "( -∞, " + colorRamp[i + 1] + ")";
+      }
+      else {
+        if (colorRamp[i + 1] == Infinity) {
+          labelContent2 = "[" + colorRamp[i] + ", ∞ )";
+        }
+        else {
+          labelContent2 = "[" + colorRamp[i] + ", " + colorRamp[i + 1] + ")";
+        }
+      }
+      legendContent2 += "<tr valign='middle'>" +
+        "<td class='tablehead' align='middle'>" + getColorBlockString(colorCode[i]) + "</td>" +
+        "<td class='tablecontent' align='right' style='width:180px;'><span style='width:90%;font-size:30;font:'>" + labelContent2 + "</span><td>" + "</tr>";
+    }
+    legendContent2 += "</tbody><table>";
+
+    div.innerHTML = legendContent2;
+    return div;
+  }
+  legend.addTo(map);
+  $.get('http://127.0.0.1:21232/'+ colName, function (rawstops) {
+    stops = rawstops._items
+    console.log(stops)
+    function returnColor(value, colorRamp, colorCode) {
+      for (var i = 1; i < colorRamp.length; i++) {
+        if (value >= colorRamp[i - 1] && value < colorRamp[i]) {
+          return colorCode[i - 1]
+        }
+        else {
+          continue;
+        }
+      }
+      return
+    }
+
+    for (var i = 0; i < stops.length; i++) {
+      var stop = stops[i];
+      var value = stop[field_name]
+      var lat = parseFloat(stops[i].lat);
+      var lon = parseFloat(stops[i].lon);
+      if (isNaN(lat) || isNaN(value) ){
+        console.log((lat), lon, value)
+        continue
+      }
+      var point = L.circle([lat, lon], {
+        radius: 30000,
+        stroke: true,
+        weight: 0.2,
+        color: "#000000",
+        fillOpacity: 1,
+        info: stops[i],
+        fillColor: returnColor(value, colorRamp, colorCode),
+        text: stop["metro_area"]
+      });
+      point.bindPopup("<b>Agency Name: " + stop["name"] + "</b><br><b>Metro Area: " + stop["metro_area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: "  + "</b>")
+      point.addTo(map)
+    }
+
+  });
+});
+
+// $("#sixth-btn").click(function(){
+//   var colName = "system_info";
+//   var fieldName = ""
+//   var colorRamp = [-Infinity, -1 , -0.5, -0.1, 0.1, 0.5, 1, Infinity]
+//   var title =  $("#title-input").val();
+//   visualization(colName, fieldName, colorRamp, title);
+
+// })
 
 function returnColor(value, colorRamp, colorCode) {
   for (var i = 1; i < colorRamp.length; i++) {
@@ -496,3 +590,75 @@ function returnColor(value, colorRamp, colorCode) {
   return
 }
 
+function visualization(colName, fieldName, colorRamp, title) {
+  var colName = "system_info";
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create("div", "info legend");
+    div.id = 'legend'
+
+    var legendContent2 = "<span style='font-size:30;'>Legend</span>"
+    legendContent2 += "<h3>" + title + "</h3>"
+    legendContent2 += '<table><tbody>'
+    for (var i = 0; i < colorCode.length; i++) {
+      if (colorRamp[i] == -Infinity) {
+        labelContent2 = "( -∞, " + colorRamp[i + 1] + ")";
+      }
+      else {
+        if (colorRamp[i + 1] == Infinity) {
+          labelContent2 = "[" + colorRamp[i] + ", ∞ )";
+        }
+        else {
+          labelContent2 = "[" + colorRamp[i] + ", " + colorRamp[i + 1] + ")";
+        }
+      }
+      legendContent2 += "<tr valign='middle'>" +
+        "<td class='tablehead' align='middle'>" + getColorBlockString(colorCode[i]) + "</td>" +
+        "<td class='tablecontent' align='right' style='width:180px;'><span style='width:90%;font-size:30;font:'>" + labelContent2 + "</span><td>" + "</tr>";
+    }
+    legendContent2 += "</tbody><table>";
+
+    div.innerHTML = legendContent2;
+    return div;
+  }
+  legend.addTo(map);
+  $.get('http://127.0.0.1:21232/'+ colName, function (rawstops) {
+    stops = rawstops._items
+    console.log(stops)
+    function returnColor(value, colorRamp, colorCode) {
+      for (var i = 1; i < colorRamp.length; i++) {
+        if (value >= colorRamp[i - 1] && value < colorRamp[i]) {
+          return colorCode[i - 1]
+        }
+        else {
+          continue;
+        }
+      }
+      return
+    }
+
+    for (var i = 0; i < stops.length; i++) {
+      var stop = stops[i];
+      var value = stop[field_name]
+      var lat = parseFloat(stops[i].lat);
+      var lon = parseFloat(stops[i].lon);
+      if (isNaN(lat) || isNaN(value) ){
+        console.log((lat), lon, value)
+        continue
+      }
+      var point = L.circle([lat, lon], {
+        radius: 30000,
+        stroke: true,
+        weight: 0.2,
+        color: "#000000",
+        fillOpacity: 1,
+        info: stops[i],
+        fillColor: returnColor(value, colorRamp, colorCode),
+        text: stop["metro_area"]
+      });
+      point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: "  + "</b>")
+      point.addTo(map)
+    }
+
+  });
+}

@@ -37,3 +37,5 @@ with urllib.request.urlopen("https://usafactsstatic.blob.core.windows.net/public
             collection.append(real_today_record)
 
         col_case.insert_many(collection)
+
+col_case.create_index([('county_FIPS', 1)])
