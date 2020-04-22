@@ -46,6 +46,7 @@ with open(data_location) as the_file:
             insertion["actual"] = float(insertion["actual"].strip("%"))/100
             insertion["week_ago"] = float(insertion["week_ago"].strip("%"))/100
             insertion["normal"] = float(insertion["normal"].strip("%"))/100
+            insertion["day"] = datetime.strptime(insertion["day"], "%m/%d/%Y").strftime("%Y%m%d")
             if insertion["name"] == "Metro Transit" and insertion["metro_area"] == "St. Louis":
                 insertion["name"] = "Metro Transit St Louis"
             

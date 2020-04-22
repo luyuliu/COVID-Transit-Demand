@@ -19,7 +19,7 @@ col_ridership = db_corona.ridership_hourly
 rl_system = list(col_system.find({}))
 
 start_date = date(2020, 3, 16)
-end_date = date(2020, 4, 13)
+end_date = date(2020, 4, 19)
 
 
 def daterange(start_date, end_date):
@@ -40,7 +40,7 @@ for each_date in (list(daterange(start_date, end_date))):
     first_error_normal = 0
     first_error_actual = 0
 
-    today_date = each_date.strftime("%Y-%m-%d")
+    today_date = each_date.strftime("%Y%m%d")
     try:
         dic[today_date]
     except:
@@ -51,7 +51,7 @@ for each_date in (list(daterange(start_date, end_date))):
         system_name = each_system["name"]
         metro_area = each_system["metro_area"]
         rl_ridership = list(col_ridership.find(
-            {"name": system_name, "day": each_date.strftime("%Y-%m-%d")}).sort("time", ASCENDING))
+            {"name": system_name, "day": each_date.strftime("%Y%m%d")}).sort("time", ASCENDING))
         y = []
         z = []
         w = []
@@ -127,10 +127,10 @@ for each_date in (list(daterange(start_date, end_date))):
         if second_peak != -1 and second_peak_normal != -1:
             second_peak_diff = second_peak - second_peak_normal
             second_count += 1
-            second_sum += first_peak_diff
+            second_sum += second_peak_diff
 
     first_average_shift = first_sum/first_count
     second_average_shift = second_sum/second_count
 
-    print(today_date, each_weekday, len(rl_system), "||",first_error_actual, first_error_normal,  "||", first_count,
-          first_average_shift, "||", second_count, second_average_shift)
+    print(today_date, each_weekday, len(rl_system), first_error_actual, first_error_normal,  first_count,
+          first_average_shift, second_count, second_average_shift)
