@@ -3,9 +3,17 @@ wfh_pop_rate = data$Work.from.home.populuation.ratio
 all_working_pop = data$All.working.population
 transit_pop_rate = data$Transit.commuting.population.ratio
 google_trend = data$X..Unique.users
-social_rate = data$rate
+social_rate = data$social_rate
 B = data$B
 pop = data$pop
+pp55 = data$pp55
+pp65 = data$pp65
+pp75 = data$pp75
+pp85 = data$pp85
 
-fit <- lm(B ~ Work.from.home.populuation.ratio + Population.commutes.using.transit + social_rate, data=data)
-summary(fit) # show results
+fit <- lm(B ~ Work.from.home.populuation.ratio + social_rate + pp55, data=data)
+summary(fit)  # show results
+
+car::vif(fit)
+cor.test(pp75, social_rate)
+

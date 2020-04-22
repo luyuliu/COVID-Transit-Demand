@@ -13,7 +13,7 @@ col_system = db_corona.system_info
 col_case = db_corona.case_count
 col_ridership = db_corona.ridership
 
-col_occu = db_corona.census_transit_pop
+col_occu = db_corona.census_commute_time
 
 rl_system = col_system.find({})
 for each_system in rl_system:
@@ -22,10 +22,10 @@ for each_system in rl_system:
     if county_FIPS == None:
         continue
 
-    rl_occu = col_occu.find_one({"county_FIPS": int(county_FIPS)})
+    rl_occu = col_occu.find_one({"Geo_FIPS": str(int(county_FIPS))})
+    # print(rl_occu)
     try:
-        wfh_pop = rl_occu["car_pop"]
+        wfh_pop = rl_occu["Average commuting time"]
     except:
         print(county_FIPS)
-    all_pop = rl_occu["all_pop"]
-    print('"', system_name ,'"', wfh_pop, all_pop)
+    print('"', system_name ,'"', wfh_pop)
