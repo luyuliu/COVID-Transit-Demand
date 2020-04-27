@@ -12,12 +12,12 @@ pp65 = data$pp65
 pp75 = data$pp75
 pp85 = data$pp85
 
-fit <- lm(B ~ vehicle0_house_rate +pp55, data=data)
+fit <- lm(B ~ Work.from.home.populuation.ratio + pp55 + black_ratio, data=data)
 summary(fit)  # show results
 
 car::vif(fit)
-cor.test(B, net_post_per_capita)
-cor.test(B, social_rate)
+cor.test(data$Work.from.home.populuation.ratio, data$female_ratio)
+cor.test(data$Work.from.home.populuation.ratio, data$hispanic_ratio)
 
 residual = resid(fit)
 
