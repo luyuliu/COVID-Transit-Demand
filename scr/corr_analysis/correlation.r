@@ -12,12 +12,19 @@ pp65 = data$pp65
 pp75 = data$pp75
 pp85 = data$pp85
 
-fit <- lm(B ~ Work.from.home.populuation.ratio + pp55 + black_ratio, data=data)
+fit <- lm(B ~ Work.from.home.populuation.ratio + black_ratio + female_ratio + transit_pop_rate , data=data)
 summary(fit)  # show results
 
 car::vif(fit)
+cor.test(data$black_ratio, data$transit_pop_rate)
+cor.test(data$all_post_per_capital, data$pp55)
+cor.test(data$Work.from.home.populuation.ratio, data$median_income)
 cor.test(data$Work.from.home.populuation.ratio, data$female_ratio)
-cor.test(data$Work.from.home.populuation.ratio, data$hispanic_ratio)
+cor.test(data$median_income, data$female_ratio)
+cor.test(data$black_ratio, data$median_income)
+cor.test(data$black_ratio, data$vehicle0_house_rate)
+cor.test(data$black_ratio, data$hispanic_ratio)
+cor.test(data$black_ratio, data$black_ratio)
 
 residual = resid(fit)
 
