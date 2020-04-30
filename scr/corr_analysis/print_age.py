@@ -25,15 +25,15 @@ for each_system in rl_system:
     rl_occu = col_occu.find_one({"FIPS": str(int(county_FIPS))})
     # print(rl_occu)
     try:
-        a1 = rl_occu["l55_pop"]
+        a1 = rl_occu["l25_pop"]
         
-        a2 = rl_occu["l65_pop"]
+        a2 = rl_occu["l35_pop"]
         
-        a3 = rl_occu["l75_pop"]
+        a3 = rl_occu["l15_pop"]
         
-        a4 = rl_occu["l85_pop"]
+        a4 = rl_occu["l45_pop"]
 
         a0 = rl_occu["total_pop"]
     except:
         print(county_FIPS)
-    print('"', system_name ,'"', a1, a3, a3, a4, a0)
+    print('"', system_name ,'"', a1, a2, a3, a4, a0)
