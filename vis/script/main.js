@@ -494,8 +494,9 @@ $("#fifth-btn").click(function () {
   var field_name = $("#field-input").val()
   // var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
   var colorRamp = [0, 0.4 , 0.5, 0.6, 0.7, 0.8, 1, Infinity]
-  var colorRamp = [-Infinity, -1 , -0.5, -0.1, 0.1, 0.5, 1, Infinity] // first
-  var colorRamp = [-Infinity, -1.5, -1, -0.75 -0.5, -0.25, 0, 0.25, 0.5] // second
+  var colorRamp = [-Infinity, -1 , -0.5, -0.1, 0.1, 0.5, 1, Infinity] // first peak shift
+  var colorRamp = [-Infinity, -1.5, -1, -0.75 -0.5, -0.25, 0, 0.25, 0.5] // second peak shift
+  var colorRamp = [0, 10, 13, 16, 19, 22, 25, Infinity] // second
 
   var title =  $("#title-input").val();    
   var legend = L.control({ position: "bottomright" });
@@ -545,7 +546,7 @@ $("#fifth-btn").click(function () {
 
     for (var i = 0; i < stops.length; i++) {
       var stop = stops[i];
-      var value = stop[field_name]
+      var value = 3.66 / stop[field_name] * 2
       var lat = parseFloat(stops[i].lat);
       var lon = parseFloat(stops[i].lon);
       if (isNaN(lat) || isNaN(value) ){
