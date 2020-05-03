@@ -45,7 +45,7 @@ for each_system in rl_system:
         {"system_name": system_name}).sort("date", ASCENDING)
     y = []
     for each_record in rl_ridership:
-        y.append(each_record["case"])
+        y.append(each_record["demand_decrease"])
     x = list(range(len(y)))
     # print((x))
 

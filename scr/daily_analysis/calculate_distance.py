@@ -66,4 +66,4 @@ for i in tqdm(threshold_list):
         dic[system_name].append(date_delta_days)
 
 for index, item in dic.items():
-    print(index, item)
+    print('"', index, '"', item)
