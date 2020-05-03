@@ -12,12 +12,12 @@ pp65 = data$pp65
 pp75 = data$pp75
 pp85 = data$pp85
 
-fit <- lm(B ~ Work.from.home.populuation.ratio +  black_ratio + pp65, data=data)
+fit <- lm(B ~ Work.from.home.populuation.ratio +  black_ratio + pp45, data=data)
 summary(fit)  # show results
 car::vif(fit)
 
 
-fit <- lm(k_corona ~ k)
+fit <- lm(k ~ google_trend + pp45, data=data)
 summary(fit)  # show results
 car::vif(fit)
 
