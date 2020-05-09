@@ -17,8 +17,8 @@ rl_system = col_system.find({}).sort("divergent_point", 1)
 
 
 def sigmoid(p, x):
-    a, b, c ,d = p
-    return a*x**3 + b*x**2 +c*x + d
+    a, b, c, d = p
+    return a*x**3 + b*x**2 + c*x + d
     # return a*np.exp(x-b) + c
     # print(x)
     # y = []
@@ -66,7 +66,7 @@ print('''\
 a = {a0}
 b = {b0}
 c = {c0}
-'''.format(a0 = a0, b0 = b0, c0 = c0))
+'''.format(a0=a0, b0=b0, c0=c0))
 
 xp = np.array(list(range(0, 30)))
 pxp = sigmoid(p, xp)
@@ -77,7 +77,8 @@ plt.xlabel('divergent point')
 plt.ylabel('Decay rate', rotation='vertical')
 plt.grid(True)
 plt.title("Decay rate - divergent point", fontsize=16)
-plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\k_and_divergent_scatter.jpg")
+plt.savefig(
+    "C:\\Users\\liu.6544\\Desktop\\coronapics\\k_and_divergent_scatter.jpg")
 plt.clf()
 
 
@@ -89,6 +90,4 @@ plt.clf()
 #     plt.grid(True)
 #     plt.title(system_name, fontsize=16)
 # plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand\\all.jpg")
-
-
 

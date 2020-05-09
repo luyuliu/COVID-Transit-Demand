@@ -104,8 +104,8 @@ function timeConverter(UNIX_timestamp){
 
 $("#zero-btn").click(function () {
   var colName = "system_info";
-  var colorRamp = [-Infinity, 0.5, 0.6, 0.7, 0.75, 0.8, 0.9, Infinity]
-  var title = 'Background value<br> distribution';    
+  var colorRamp = [-Infinity, -0.9, -0.8, -0.7, -0.65, -0.6, -0.55, 0]
+  var title = 'Floor value<br> distribution';    
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend");
@@ -154,7 +154,7 @@ $("#zero-btn").click(function () {
 
     for (var i = 0; i < stops.length; i++) {
       var stop = stops[i];
-      var value = stop.L;
+      var value = stop.B;
       var lat = parseFloat(stops[i].lat);
       var lon = parseFloat(stops[i].lon);
       if (isNaN(lat)){
@@ -169,9 +169,9 @@ $("#zero-btn").click(function () {
         fillOpacity: 1,
         info: stops[i],
         fillColor: returnColor(value/1, colorRamp, colorCode),
-        text: stop["Metro Area"]
+        text: stop["metro_area"]
       });
-      point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>L: " + stop["L"] + "</b><br><b>k: " + stop.k + "</b>")
+      point.bindPopup("<b>Agency Name: " + stop["name"] + "</b><br><b>Metro Area: " + stop["metro_area"]+ "</b><br><b>B: " + stop["B"] + "</b><br><b>k: " + stop.k + "</b>")
       point.addTo(map)
     }
 
