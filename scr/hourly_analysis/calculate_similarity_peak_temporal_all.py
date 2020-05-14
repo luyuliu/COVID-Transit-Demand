@@ -16,7 +16,7 @@ col_system = db_corona.system_info_all
 col_case = db_corona.corona_cases_usafacts
 col_ridership = db_corona.aggregated_ridership_hourly
 
-rl_system = ["All cities", "United Kingdom", "United States", "France", "Canada"]
+rl_system = ["All cities", "United Kingdom", "United States", "France", "Canada", "New Zealand", "Australia"]
 
 start_date = date(2020, 3, 16)
 end_date = date(2020, 4, 19)
