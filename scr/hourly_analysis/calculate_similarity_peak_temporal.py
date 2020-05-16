@@ -128,7 +128,7 @@ for each_date in (list(daterange(start_date, end_date))):
             second_peak_diff = second_peak - second_peak_normal
             second_count += 1
             second_sum += second_peak_diff
-
+        print()
     first_average_shift = first_sum/first_count
     second_average_shift = second_sum/second_count
 

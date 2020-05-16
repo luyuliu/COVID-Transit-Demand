@@ -17,7 +17,7 @@ col_ridership = db_corona.ridership_hourly
 rl_system = list(col_system.find({}))
 
 start_date = date(2020, 3 ,16)
-end_date = date(2020, 4, 13)
+end_date = date(2020, 5, 11)
 
 def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
@@ -41,12 +41,15 @@ for each_date in (list(daterange(start_date, end_date))):
 
     height_relationship_change_count = 0
     each_weekday = each_date.weekday()
+
+    if each_weekday >= 5:
+        continue
     for each_system in rl_system:
         _id = each_system["_id"]
         system_name = each_system["name"]
         metro_area = each_system["metro_area"]
         rl_ridership = list(col_ridership.find(
-            {"name": system_name, "day": each_date.strftime("%Y-%m-%d")}).sort("time", ASCENDING))
+            {"name": system_name, "day": each_date.strftime("%Y%m%d")}).sort("time", ASCENDING))
         y = []
         z = []
         w = []

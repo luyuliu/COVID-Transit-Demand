@@ -19,7 +19,7 @@ col_ridership = db_corona.aggregated_ridership_hourly
 rl_system = ["All cities", "United Kingdom", "United States", "France", "Canada", "New Zealand", "Australia"]
 
 start_date = date(2020, 3, 16)
-end_date = date(2020, 4, 19)
+end_date = date(2020, 5, 11)
 
 
 def daterange(start_date, end_date):
@@ -41,6 +41,8 @@ for each_system in rl_system:
 
     for each_date in (list(daterange(start_date, end_date))):
         each_weekday = each_date.weekday()
+        if each_weekday > 4:
+            continue
         today_date = each_date.strftime("%Y%m%d")
         try:
             dic[today_date]
@@ -127,7 +129,7 @@ for each_system in rl_system:
             second_count += 1
             second_sum += second_peak_diff
 
-        print(today_date, system_name, first_peak_diff, second_peak_diff)
+        print(today_date, '"' ,system_name, '"' ,first_peak_diff, second_peak_diff)
 
     # first_average_shift = first_sum/first_count
     # second_average_shift = second_sum/second_count

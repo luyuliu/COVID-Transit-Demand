@@ -7,6 +7,7 @@ import os, math
 from datetime import date, timedelta
 from pymongo import MongoClient, ASCENDING
 from scipy.optimize import leastsq
+from scipy.interpolate import interp1d
 client = MongoClient('mongodb://localhost:27017/')
 
 db_corona = client.corona
@@ -17,13 +18,14 @@ col_ridership = db_corona.ridership_hourly
 rl_system = list(col_system.find({}))
 
 start_date = date(2020, 3 ,16)
-end_date = date(2020, 4, 13)
+end_date = date(2020, 5, 11)
 
 def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + timedelta(n)
 
 dic = {}
+temporal_dic = {}
 
 for each_date in (list(daterange(start_date, end_date))):
     system_count = 0
@@ -38,12 +40,13 @@ for each_date in (list(daterange(start_date, end_date))):
 
     height_relationship_change_count = 0
     each_weekday = each_date.weekday()
+    today_date = each_date.strftime("%Y%m%d")
     for each_system in rl_system:
         _id = each_system["_id"]
         system_name = each_system["name"]
         metro_area = each_system["metro_area"]
         rl_ridership = list(col_ridership.find(
-            {"name": system_name, "day": each_date.strftime("%Y-%m-%d")}).sort("time", ASCENDING))
+            {"name": system_name, "day": each_date.strftime("%Y%m%d")}).sort("time", ASCENDING))
         y = []
         z = []
         w = []
@@ -51,6 +54,12 @@ for each_date in (list(daterange(start_date, end_date))):
 
         if len(rl_ridership) == 0:
             continue
+
+        try:
+            temporal_dic[system_name]
+        except:
+            temporal_dic[system_name] = []
+
             
         for each_record in rl_ridership:
             if each_record["actual"] != 0:
@@ -215,11 +224,63 @@ for each_date in (list(daterange(start_date, end_date))):
     #     plt.title(system_name, fontsize=16)
     # plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand\\all.jpg")
 
+# Plot collective temporal curves of different systems
+
+average_procrustes_dis = []
+std_procrustes_dis = []
+count =0
 
 for index, item in dic.items():# Update
-    average = 0
-    for a in item:
-        average += a
-    average = average/len(item)
-    col_system.update_one({"name": index}, {"$set": {"average_procrustes_distance": average}})
-    print(index, item)
+    # print(len(item))
+    if count == 0:
+        average_procrustes_dis = [0] * len(item)
+    # print(average_procrustes_dis, item)
+    for i in range(len(item)):
+        average_procrustes_dis[i] += item[i]
+    
+    count += 1
+
+average_procrustes_dis = [x/ count for x in average_procrustes_dis]
+
+print(count)
+std_procrustes_dis = [0] * len(average_procrustes_dis)
+for index, item in dic.items():# Update
+    for i in range(len(item)):
+        std_procrustes_dis[i] += (item[i] - average_procrustes_dis[i]) ** 2
+
+std_procrustes_dis = [(x/ count)**(1/2) for x in std_procrustes_dis]
+
+print(average_procrustes_dis, std_procrustes_dis)
+    # average = 0
+    # for a in item:
+    #     average += a
+    # average = average/len(item)
+    # col_system.update_one({"name": index}, {"$set": {"average_procrustes_distance": average}})
+    # print(index, item)
+
+    # # plot
+    # xx = [(start_date + timedelta(days=i)).strftime("%Y%m%d") for i in range(len(item))]
+    # plt.plot(xx, item, '-')
+
+xx = [(start_date + timedelta(days=i)).strftime("%Y%m%d") for i in range(len(average_procrustes_dis))]
+# f = interp1d(xx, average_procrustes_dis, kind='quadratic')
+# y_smooth=f(xx)
+
+plt.errorbar(xx, average_procrustes_dis, yerr=std_procrustes_dis, errorevery=1, markeredgewidth=10)
+
+xl = []
+a = 0
+for each_day in xx:
+    if a % 14 == 0:
+        xl.append(each_day)
+    a += 1
+plt.xticks(xl, xl,
+       rotation=0)
+
+plt.xlabel('x: days')
+plt.ylabel('y: Procrustes distance')
+# plt.ylabel('y: Stretch factor')
+
+plt.grid(True)
+# plt.title("Procrustes", fontsize=16)
+plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\all_procrustes_distance.jpg", dpi=500)
