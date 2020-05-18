@@ -12,19 +12,31 @@ pp65 = data$pp65
 pp75 = data$pp75
 pp85 = data$pp85
 
+fit <- lm(B ~ Work.from.home.populuation.ratio +  black_ratio + pp45 + google_trend_Coronavirus, data=data)
+summary(fit)  # show results
+car::vif(fit)
+
+fit <- lm(B ~ black_ratio + pp45 + google_trend_Coronavirus, data=data)
+summary(fit)  # show results
+car::vif(fit)
+
+fit <- lm(B ~ Work.from.home.populuation.ratio +  pp45 + google_trend_Coronavirus, data=data)
+summary(fit)  # show results
+car::vif(fit)
+
+fit <- lm(B ~ Work.from.home.populuation.ratio +  black_ratio + google_trend_Coronavirus, data=data)
+summary(fit)  # show results
+car::vif(fit)
+
 fit <- lm(B ~ Work.from.home.populuation.ratio +  black_ratio + pp45, data=data)
 summary(fit)  # show results
 car::vif(fit)
 
 
-fit <- lm(k ~ google_trend + pp45, data=data)
-summary(fit)  # show results
-car::vif(fit)
+cor.test(data$B, data$net_post_per_capita)
+cor.test(data$Work.from.home.populuation.ratio, data$google_trend_Coronavirus)
 
-
-cor.test(data$k, data$unique_user_per_capita)
-
-cor.test(data$B, data$google_trend)
+cor.test(data$Work.from.home.populuation.ratio, data$hispanic_ratio)
 cor.test(data$pp45, data$all_post_per_capita)
 cor.test(data$Work.from.home.populuation.ratio, data$vehicle0_house_rate)
 cor.test(data$Work.from.home.populuation.ratio, data$transit_pop_rate)

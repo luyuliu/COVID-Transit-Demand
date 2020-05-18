@@ -31,9 +31,10 @@ with open(data_location) as the_file:
                 if field_names[index] == "DMA":
                     rl_google = col_corona.find_one({"DMA": item})
                     if rl_google != None:
-                        trend = rl_google['search_index']
+                        trend = rl_google['COVID19']
+                        trend_coronavirus = rl_google["Coronavirus"]
                         rl_case = col_case.find_one({"name": system_name})
-                        col_case.update_one({"_id": rl_case["_id"]}, {"$set": {"google_trend": trend}})
+                        col_case.update_one({"_id": rl_case["_id"]}, {"$set": {"google_trend_COVID19": trend, "google_trend_Coronavirus": trend_coronavirus}})
                     else:
                         print(item)
                     

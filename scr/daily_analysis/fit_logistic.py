@@ -39,6 +39,8 @@ def resize(arr, lower=0.0, upper=1.0):
 for each_system in rl_system:
     _id = each_system["_id"]
     system_name = each_system["name"]
+    if system_name == "KCATA":
+        continue
     metro_area = each_system["metro_area"]
     print(system_name, metro_area)
     rl_ridership = col_ridership.find(
