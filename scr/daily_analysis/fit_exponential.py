@@ -89,7 +89,7 @@ for each_system in rl_system:
     x0_guess = 0
     for each_record in rl_ridership:
         y.append(each_record["confirmed"])
-        if each_record["confirmed"] <= 5:
+        if each_record["confirmed"] < 1:
             x0_guess +=1
 
     def exponential(x, L, k, y0):

@@ -54,7 +54,7 @@ north.onAdd = function (map) {
 north.addTo(map);
 
 
-var colorCode = ['#4575b4','#91bfdb','#e0f3f8','#ffffbf','#fee090','#fc8d59','#d73027']
+var colorCode = ['#eff3ff','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594']
 // var colorRamp = [0, 7, 14, 28, 70, 140, 280, 600]
 // var colorRamp = [0, 7, 14, 28, 70, 140, 280, Infinity]
 
@@ -330,10 +330,10 @@ $("#second-btn").click(function () {
 
 $("#third-btn").click(function () {
   var colName = "system_info";
-  var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4'];
   var colorRamp = [-Infinity,  -10, -5, -2, 0, 5, 10, Infinity];
+  var colorCode = ['#084594','#2171b5','#4292c6','#6baed6','#9ecae1','#c6dbef','#eff3ff']
   var l = $("#lag-input").val();
-  var title = 'Response interval <br> from convergent point<br> (lag = ' + l +')';    
+  var title = 'Response interval <br> from cliff point<br> (lag = ' + l +')';    
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend");
@@ -390,7 +390,7 @@ $("#third-btn").click(function () {
         continue
       }
       var point = L.circle([lat, lon], {
-        radius: 40000,
+        radius: 30000,
         stroke: true,
         weight: 0.2,
         color: "#000000",
@@ -410,8 +410,10 @@ $("#third-btn").click(function () {
 $("#fourth-btn").click(function () {
   var colName = "system_info";
   // var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
-  var colorRamp = [0, 15 , 17, 19, 21, 23, 25, Infinity]
-  var title = '95 percentile date<br> distribution';  
+  var colorRamp = [-Infinity, 10 , 14, 18, 22, 26, 30, Infinity]
+  // var title = '95 percentile date<br> distribution';  
+  var title = 'Decay duration<br> distribution';  
+
   // var fieldName = 
   
   // visualization(colName, fieldName, colorRamp, title);
@@ -463,14 +465,14 @@ $("#fourth-btn").click(function () {
 
     for (var i = 0; i < stops.length; i++) {
       var stop = stops[i];
-      var value = stop.x005;
-      var value2 = stop.x0;
+      var value = stop.k;
       var lat = parseFloat(stops[i].lat);
       var lon = parseFloat(stops[i].lon);
-      if (isNaN(lat) || isNaN(value) || isNaN(value2)){
+      if (isNaN(lat) || isNaN(value)){
         console.log((lat), lon, value)
         continue
       }
+      value = 7.33/value;
       var point = L.circle([lat, lon], {
         radius: 30000,
         stroke: true,
@@ -481,7 +483,7 @@ $("#fourth-btn").click(function () {
         fillColor: returnColor(value, colorRamp, colorCode),
         text: stop["metro_area"]
       });
-      point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: " + value2 + "</b>")
+      point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>x005: " + value + "</b><br><b>x0_case: " + value + "</b>")
       point.addTo(map)
     }
 
@@ -492,12 +494,12 @@ $("#fourth-btn").click(function () {
 $("#fifth-btn").click(function () {
   var colName = "system_info";
   var field_name = $("#field-input").val()
-  // var colorCode = ['#d73027','#fc8d59','#fee090','#ffffbf','#e0f3f8','#91bfdb','#4575b4']
-  var colorRamp = [0, 0.4 , 0.5, 0.6, 0.7, 0.8, 1, Infinity]
-  var colorRamp = [-Infinity, -1 , -0.5, -0.1, 0.1, 0.5, 1, Infinity] // first peak shift
+  var colorCode = ['#084594','#2171b5','#4292c6','#6baed6','#9ecae1','#c6dbef','#eff3ff']
+  // var colorRamp = [0, 0.4 , 0.5, 0.6, 0.7, 0.8, 1, Infinity] // Procrustes distance
+  var colorRamp = [-Infinity, -1 , -0.5, -0.1, 0.1, 0.5, 1, Infinity] // peak shift
   // var colorRamp = [-Infinity, -1.5, -1, -0.75 -0.5, -0.25, 0, 0.25, 0.5] // second peak shift
   // var colorRamp = [0, 10, 13, 16, 19, 22, 25, Infinity] // second
-  var colorRamp = [-Infinity, -3 , -2, -1, -0.5, 0, 0.5, 1] // Working hour
+  // var colorRamp = [-Infinity, -3 , -2, -1, -0.5, 0, 0.5, 1] // Working hour
 
   var title =  $("#title-input").val();    
   var legend = L.control({ position: "bottomright" });
@@ -548,7 +550,8 @@ $("#fifth-btn").click(function () {
     for (var i = 0; i < stops.length; i++) {
       var stop = stops[i];
       // var value = 3.66 / stop[field_name] * 2 
-      var value = stop[field_name] - stop["first_peak_diff"]
+      // var value = stop[field_name] - stop["first_peak_diff"]
+      var value = stop[field_name]
       var lat = parseFloat(stops[i].lat);
       var lon = parseFloat(stops[i].lon);
       if (isNaN(lat) || isNaN(value) ){
