@@ -13,7 +13,7 @@ col_system = db_corona.system_info
 col_case = db_corona.case_count
 col_ridership = db_corona.ridership
 
-col_occu = db_corona.census_car_ownership
+col_occu = db_corona.census_car_renter
 
 rl_system = col_system.find({})
 for each_system in rl_system:

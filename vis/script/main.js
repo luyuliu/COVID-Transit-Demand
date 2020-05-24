@@ -104,7 +104,8 @@ function timeConverter(UNIX_timestamp){
 
 $("#zero-btn").click(function () {
   var colName = "system_info";
-  var colorRamp = [-Infinity, -0.9, -0.8, -0.7, -0.65, -0.6, -0.55, 0]
+  var colorRamp = [-1.01, -0.84, -0.78, -0.74, -0.71, -0.68, -0.61, -0.37]
+  var colorCode = ['#084594','#2171b5','#4292c6','#6baed6','#9ecae1','#c6dbef','#eff3ff']
   var title = 'Floor value<br> distribution';    
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function (map) {
@@ -244,7 +245,7 @@ $("#first-btn").click(function () {
         fillOpacity: 1,
         info: stops[i],
         fillColor: returnColor(value/1, colorRamp, colorCode),
-        text: stop["Metro Area"]
+        text: stop["metro_area"]
       });
       point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>L: " + stop["L"] + "</b><br><b>k: " + stop.k + "</b>")
       point.addTo(map)
@@ -255,8 +256,8 @@ $("#first-btn").click(function () {
 
 $("#second-btn").click(function () {
   var colName = "system_info";
-  var colorRamp = [10,   12.5, 15, 17.5, 20, 22.5, 25, Infinity]
-  var title = ' distribution';    
+  var colorRamp = [5.76,   15.9, 17.5, 19.1, 21.0, 23.6, 29.9, 60.7]
+  var title = 'Decay duration  <br> (hours) distribution';    
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend");
@@ -304,7 +305,7 @@ $("#second-btn").click(function () {
 
     for (var i = 0; i < stops.length; i++) {
       var stop = stops[i];
-      var value = stop.x005;
+      var value = 7.327/stop.k;
       var lat = parseFloat(stops[i].lat);
       var lon = parseFloat(stops[i].lon);
       if (isNaN(lat)){
@@ -319,7 +320,7 @@ $("#second-btn").click(function () {
         fillOpacity: 1,
         info: stops[i],
         fillColor: returnColor(value/1, colorRamp, colorCode),
-        text: stop["Metro Area"]
+        text: stop["metro_area"]
       });
       point.bindPopup("<b>Agency Name: " + stop["Agency Name"] + "</b><br><b>Metro Area: " + stop["Metro Area"]+ "</b><br><b>L: " + stop["L"] + "</b><br><b>k: " + stop.k + "</b>")
       point.addTo(map)
@@ -330,7 +331,7 @@ $("#second-btn").click(function () {
 
 $("#third-btn").click(function () {
   var colName = "system_info";
-  var colorRamp = [-Infinity,  -10, -5, -2, 0, 5, 10, Infinity];
+  var colorRamp = [-43.8,  -38.2, -4.5, 0.6, 2.8, 5.9, 8.9, 28.3];
   var colorCode = ['#084594','#2171b5','#4292c6','#6baed6','#9ecae1','#c6dbef','#eff3ff']
   var l = $("#lag-input").val();
   var title = 'Response interval <br> from cliff point<br> (lag = ' + l +')';    
