@@ -33,7 +33,7 @@ summary(fit)  # show results
 car::vif(fit)
 
 
-cor.test(data$B, data$net_post_per_capita)
+cor.test(data$B, data$vehicle0_renter)
 cor.test(data$Work.from.home.populuation.ratio, data$google_trend_Coronavirus)
 
 cor.test(data$Work.from.home.populuation.ratio, data$hispanic_ratio)
@@ -44,7 +44,7 @@ cor.test(data$median_income, data$female_ratio)
 cor.test(data$black_ratio, data$median_income)
 cor.test(data$black_ratio, data$vehicle0_house_rate)
 cor.test(data$B, data$black_ratio)
-cor.test(data$black_ratio, data$black_ratio)
+cor.test(data$divergent_point, data$convergent_point)
 
 residual = resid(fit)
 
