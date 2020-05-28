@@ -181,7 +181,7 @@ $("#zero-btn").click(function () {
 
 $("#first-btn").click(function () {
   var colName = "system_info";
-  var colorRamp = [-Infinity, 0.25 , 0.3, 0.4, 0.5, 0.6, 0.75, Infinity]
+  var colorRamp = [0.12, 0.25 , 0.31, 0.35, 0.38, 0.42, 0.46, 1.28]
   var title = 'Decay rate<br> distribution';    
   var legend = L.control({ position: "bottomright" });
   legend.onAdd = function (map) {

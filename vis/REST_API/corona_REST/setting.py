@@ -1,5 +1,6 @@
 DOMAIN = {
-    'census_income': {'datasource': {'source': 'census_income'}},
+    'census_car_renter': {'datasource': {'source': 'census_car_renter'}},
+        'census_income': {'datasource': {'source': 'census_income'}},
         'google_trend_20200417': {'datasource': {'source': 'google_trend_20200417'}},
         'census_occupation_industry': {'datasource': {'source': 'census_occupation_industry'}},
         'ridership': {'datasource': {'source': 'ridership'}},

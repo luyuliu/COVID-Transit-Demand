@@ -263,10 +263,15 @@ print(average_procrustes_dis, std_procrustes_dis)
     # plt.plot(xx, item, '-')
 
 xx = [(start_date + timedelta(days=i)).strftime("%Y%m%d") for i in range(len(average_procrustes_dis))]
+print(average_procrustes_dis)
 # f = interp1d(xx, average_procrustes_dis, kind='quadratic')
 # y_smooth=f(xx)
 
-plt.errorbar(xx, average_procrustes_dis, yerr=std_procrustes_dis, errorevery=1, markeredgewidth=10)
+xc = ["black" if (start_date + timedelta(days=i)).weekday()<=4 else "#95d0fc" for i in range(len(average_procrustes_dis))]
+
+# plt.errorbar(xx, average_procrustes_dis, yerr=std_procrustes_dis, errorevery=1, markeredgewidth=10)
+plt.scatter(xx, average_procrustes_dis, c=xc)
+plt.plot(xx, average_procrustes_dis, '-')
 
 xl = []
 a = 0
