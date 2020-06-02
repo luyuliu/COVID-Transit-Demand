@@ -12,7 +12,7 @@ pp65 = data$pp65
 pp75 = data$pp75
 pp85 = data$pp85
 
-fit <- lm(B ~ Work.from.home.populuation.ratio +  black_ratio + pp45 + google_trend_Coronavirus, data=data)
+fit <- lm(average_procrustes_distance ~ work.from.home.populuation.ratio +  black_ratio + pp45, data=data)
 summary(fit)  # show results
 car::vif(fit)
 

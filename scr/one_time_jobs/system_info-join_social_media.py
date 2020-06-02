@@ -23,3 +23,6 @@ for each_system in rl_system:
         pass
     else:
         print('"', each_system["name"], '"', each_system["B"], rl_social["uniq_users"], rl_social["total_post"], rl_pop["population"])
+
+
+        #system_info-join_emergency
