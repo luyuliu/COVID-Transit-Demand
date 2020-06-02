@@ -98,7 +98,7 @@ plt.ylabel('y: Decay rate', rotation='vertical')
 plt.grid(True)
 # plt.title("Decay rate - divergent point", fontsize=16)
 plt.savefig(
-    "C:\\Users\\liu.6544\\Desktop\\coronapics\\k_and_cliff_scatter.jpg")
+    "C:\\Users\\liu.6544\\Desktop\\coronapics\\k_and_cliff_scatter.eps", format="eps")
 plt.clf()
 
 

@@ -100,7 +100,7 @@ plt.grid(True)
 # plt.savefig(
 #     "C:\\Users\\liu.6544\\Desktop\\coronapics\\k_and_cliff_scatter.jpg")
 plt.savefig(
-    "C:\\Users\\liu.6544\\Desktop\\coronapics\\k_and_floor_scatter.jpg")
+    "C:\\Users\\liu.6544\\Desktop\\coronapics\\k_and_floor_scatter.eps", format="eps")
 plt.clf()
 
 

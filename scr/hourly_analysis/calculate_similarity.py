@@ -288,4 +288,4 @@ plt.ylabel('y: Procrustes distance')
 
 plt.grid(True)
 # plt.title("Procrustes", fontsize=16)
-plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\all_procrustes_distance.jpg", dpi=500)
+plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\all_procrustes_distance.eps", format="eps")

@@ -13,7 +13,9 @@ client = MongoClient('mongodb://localhost:27017/')
 db_corona = client.corona
 col_system = db_corona.system_info
 col_case = db_corona.corona_cases_usafacts
-col_ridership = db_corona.aggregated_ridership_hourly
+# col_ridership = db_corona.aggregated_ridership_hourly
+
+col_ridership = db_corona.ridership_hourly
 
 
 start_date = date(2020, 3 ,16)
@@ -27,10 +29,12 @@ def daterange(start_date, end_date):
 
 for each_date in tqdm(list(daterange(start_date, end_date))):
     dic = {}
-    rl_ridership = col_ridership.find({"day": each_date.strftime("%Y-%m-%d")})
+    rl_ridership = col_ridership.find({"day": each_date.strftime("%Y%m%d")})
 
     for each_record in rl_ridership:
         name = each_record["name"]
+        if name != "MTA - NYC Subway":
+            continue
         try:
             dic[name]
         except:
@@ -40,7 +44,7 @@ for each_date in tqdm(list(daterange(start_date, end_date))):
             
         dic[name]["actual"].append(each_record["actual"])
         dic[name]["normal"].append(each_record["normal"])
-
+        
     for name, item in dic.items():
         y = item["actual"]
         z = item["normal"]
@@ -50,8 +54,8 @@ for each_date in tqdm(list(daterange(start_date, end_date))):
         plt.xlabel('x: hour')
         plt.ylabel('y: transit demand (%)')
         plt.grid(True)
-        plt.title(name, fontsize=16)
-        plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\demand_hourly_aggregated\\" + name + "_" + each_date.strftime("%Y-%m-%d")
-                    + ".jpg")
+        # plt.title(name, fontsize=16)
+        plt.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\" + name + "_" + each_date.strftime("%Y-%m-%d")
+                    + ".eps", format='eps')
         plt.clf()
 
