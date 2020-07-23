@@ -16,8 +16,9 @@ fit <- lm(average_procrustes_distance ~ work.from.home.populuation.ratio +  blac
 summary(fit)  # show results
 car::vif(fit)
 
-fit <- lm(B ~ black_ratio + pp45 + google_trend_Coronavirus, data=data)
+fit <- lm(B ~ Work.from.home.populuation.ratio+ black_ratio + pp45 + google_trend_Coronavirus+ pop_den, data=data)
 summary(fit)  # show results
+bptest(model)
 car::vif(fit)
 
 fit <- lm(B ~ Work.from.home.populuation.ratio +  pp45 + google_trend_Coronavirus, data=data)
@@ -36,7 +37,7 @@ car::vif(fit)
 cor.test(data$B, data$vehicle0_renter)
 cor.test(data$Work.from.home.populuation.ratio, data$google_trend_Coronavirus)
 
-cor.test(data$Work.from.home.populuation.ratio, data$hispanic_ratio)
+cor.test(data$Work.from.home.populuation.ratio, data$pop_den)
 cor.test(data$pp45, data$all_post_per_capita)
 cor.test(data$Work.from.home.populuation.ratio, data$vehicle0_house_rate)
 cor.test(data$Work.from.home.populuation.ratio, data$transit_pop_rate)
