@@ -18,17 +18,17 @@ col_occu = db_corona.transit_score
 rl_system = col_system.find({})
 for each_system in rl_system:
     system_name =  each_system["name"]
-    # county_FIPS = each_system["county_FIPS"]
+    county_FIPS = each_system["lat"]
     city = each_system["metro_area"]
-    # if county_FIPS == None:
-    #     continue
+    if county_FIPS == None:
+        continue
 
     rl_occu = col_occu.find_one({"City": city})
     # print(rl_occu)
     try:
         a1 = rl_occu["Transit Score"]
+        print(system_name ,',', a1)
         
     except:
-        # print(county_FIPS)
-        print(rl_occu)
-    print(system_name ,',', a1)
+        # print(None)
+        print(system_name ,',', None)
