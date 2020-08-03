@@ -10,9 +10,9 @@ pop = data$pop
 pp55 = data$pp55
 pp65 = data$pp65
 pp75 = data$pp75
-pp85 = data$transit_score
+pp85 = data$employ_den
 
-fit <- lm(divergent_point ~ median_income+ transit_score, data=data)
+fit <- lm(B ~ work.from.home.populuation.ratio+ pp45 + black_ratio+ google_trend_Coronavirus + transit_pop_rate + vehicle0_house_rate, data=data)
 summary(fit)  # show results
 car::vif(fit)
 
@@ -21,7 +21,7 @@ library(spdep)
 library(RColorBrewer)
 library(gstat)
 
-fit <- lm(B ~ Work.from.home.populuation.ratio+ black_ratio + pp45 + google_trend_Coronavirus, data=data)
+fit <- lm(B ~ employ_den + black_ratio + pp45 + google_trend_Coronavirus, data=data)
 summary(fit)  # show results
 bptest(model)
 car::vif(fit)
@@ -30,7 +30,7 @@ fit <- lagsarlm(B ~ Work.from.home.populuation.ratio +  pp45 + google_trend_Coro
 summary(fit)  # show results
 car::vif(fit)
 
-fit <- lm(B ~ Work.from.home.populuation.ratio +  black_ratio + google_trend_Coronavirus, data=data)
+fit <- lm(B ~ Work.from.home.populuation.ratio +  black_ratio + pp45 + google_trend_Coronavirus + transit_pop_rate + vehicle0_house_rate, data=data)
 summary(fit)  # show results
 car::vif(fit)
 
@@ -39,7 +39,7 @@ summary(fit)  # show results
 car::vif(fit)
 
 
-cor.test(data$B, data$vehicle0_renter)
+cor.test(data$female_ratio, data$black_ratio)
 cor.test(data$Work.from.home.populuation.ratio, data$google_trend_Coronavirus)
 
 cor.test(data$median_income, data$employ_den)
@@ -49,7 +49,7 @@ cor.test(data$Work.from.home.populuation.ratio, data$transit_pop_rate)
 cor.test(data$median_income, data$female_ratio)
 cor.test(data$black_ratio, data$median_income)
 cor.test(data$black_ratio, data$vehicle0_house_rate)
-cor.test(data$B, data$black_ratio)
+cor.test(data$B, data$homeless_ratio)
 cor.test(data$divergent_point, data$convergent_point)
 
 residual = resid(fit)
