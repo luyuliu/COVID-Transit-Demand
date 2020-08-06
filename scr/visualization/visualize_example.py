@@ -39,7 +39,7 @@ def resize(arr, lower=0.0, upper=1.0):
 for each_system in rl_system:
     _id = each_system["_id"]
     system_name = each_system["name"]
-    if system_name != "MTA - Manhattan Buses":
+    if system_name != "Capital Metro":
         continue
     metro_area = each_system["metro_area"]
     print(system_name, metro_area)
