@@ -46,8 +46,10 @@ r_sq_list = []
 for each_system in rl_system:
     _id = each_system["_id"]
     system_name = each_system["name"]
-    if system_name == "KCATA":
+    if each_system["lat"] == None:
         continue
+    # if system_name == "KCATA":
+    #     continue
     metro_area = each_system["metro_area"]
     # print(system_name, metro_area)
     rl_ridership = col_ridership.find(
@@ -85,9 +87,9 @@ for each_system in rl_system:
     k2, pvaluenormal = stats.shapiro(residuals(p, x, y))
 
     # print("p = {:g}".format(p))
-    if pvaluenormal < 0.05:
+    if r_squared < 0.9:
         count = count + 1
-        print(system_name, pvaluenormal, len(x))
+        print(system_name, r_squared)
         stats.probplot(residuals(p, x, y), dist="norm", plot=pylab)
         pylab.title(metro_area + " - " + system_name, fontsize=16)
         pylab.savefig("C:\\Users\\liu.6544\\Desktop\\coronapics\\qqplots\\" + metro_area + "_" +

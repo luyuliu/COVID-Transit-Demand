@@ -68,8 +68,6 @@ for each_system in rl_system:
     x005 = {results_005}
     '''.format(x0=x0, y0=y0, L=L, k=k, results_005=results_005))
     
-    
-
     col_system.update_one({"_id": _id}, {"$set": {
                           "B": L, "k": k, "t0": x0, "b": y0, "divergent_point": results_005, "convergent_point": results_095, "modified_at": date.today().strftime("%Y%m%d")}}
                           )
