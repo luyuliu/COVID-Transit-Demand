@@ -77,6 +77,7 @@ for each_date in (list(daterange(start_date, end_date))):
         
 weekday_item = []
 for each_date, each_item in dic.items():
+    today = each_date
     each_date = datetime.strptime(each_date, "%Y%m%d")
     each_weekday = each_date.weekday()
 
@@ -101,7 +102,7 @@ for each_date, each_item in dic.items():
             if sum_z2 != 0:
                 p_normal = sum_wz / sum_z2
             else:
-                print(system_name, 'wrong')
+                # print(system_name, 'wrong')
                 # print(weekday_item)
                 continue
             
@@ -125,7 +126,7 @@ for each_date, each_item in dic.items():
             if sum_z2 != 0:
                 p_actual = sum_wz / sum_z2
             else:
-                print(system_name, 'wrong')
+                # print(system_name, 'wrong')
                 continue
 
             S = 0
@@ -133,4 +134,4 @@ for each_date, each_item in dic.items():
                 S += (p_actual*weekday_actual[i] - weekend_actual[i]) ** 2
             S_actual = math.sqrt(S)
             
-            print(system_name, S_actual - S_normal)
+            print(today,":", system_name, ":", S_actual - S_normal)

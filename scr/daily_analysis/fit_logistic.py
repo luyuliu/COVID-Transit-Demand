@@ -50,6 +50,15 @@ for each_system in rl_system:
         y.append(each_record["demand_decrease"])
     x = list(range(len(y)))
     # print((x))
+    rl_ridership = col_case.find(
+        {"county_FIPS": county_FIPS}).sort("date", ASCENDING)
+    y = []
+    x0_first_date = 0
+
+    for each_record in rl_ridership:
+        y.append(each_record["confirmed"])
+        if each_record["confirmed"] < 1:
+            x0_first_date +=1
 
     p_guess = (int(np.median(x)), 0, 1.0, 0.5)
     # if system_name == "CATA":
@@ -68,9 +77,9 @@ for each_system in rl_system:
     x005 = {results_005}
     '''.format(x0=x0, y0=y0, L=L, k=k, results_005=results_005))
     
-    col_system.update_one({"_id": _id}, {"$set": {
-                          "B": L, "k": k, "t0": x0, "b": y0, "divergent_point": results_005, "convergent_point": results_095, "modified_at": date.today().strftime("%Y%m%d")}}
-                          )
+    # col_system.update_one({"_id": _id}, {"$set": {
+    #                       "B": L, "k": k, "t0": x0, "b": y0, "first_case_date":x0_first_date, "divergent_point": results_005, "convergent_point": results_095, "modified_at": date.today().strftime("%Y%m%d")}}
+    #                       )
 
     xp = np.linspace(0, len(x), len(y))
     pxp = sigmoid(p, xp)

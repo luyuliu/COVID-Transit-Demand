@@ -12,7 +12,7 @@ pp65 = data$pp65
 pp75 = data$pp75
 pp85 = data$employ_den
 
-fit <- lm(B ~ work.from.home.populuation.ratio+ pp45 + black_ratio+ google_trend_Coronavirus + transit_pop_rate + vehicle0_house_rate, data=data)
+fit <- lm(B ~ work.from.home.populuation.ratio+ pp45 + black_ratio+ google_trend_Coronavirus , data=data)
 summary(fit)  # show results
 car::vif(fit)
 
@@ -40,7 +40,7 @@ car::vif(fit)
 
 
 cor.test(data$female_ratio, data$black_ratio)
-cor.test(data$Work.from.home.populuation.ratio, data$google_trend_Coronavirus)
+cor.test(data$Work.from.home.populuation.ratio, data$employ_den)
 
 cor.test(data$median_income, data$employ_den)
 cor.test(data$pp45, data$all_post_per_capita)

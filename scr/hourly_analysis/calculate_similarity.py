@@ -273,6 +273,8 @@ xc = ["black" if (start_date + timedelta(days=i)).weekday()<=4 else "#95d0fc" fo
 plt.scatter(xx, average_procrustes_dis, c=xc)
 plt.plot(xx, average_procrustes_dis, '-')
 
+print(average_procrustes_dis)
+
 xl = []
 a = 0
 for each_day in xx:
